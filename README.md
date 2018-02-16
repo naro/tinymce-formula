@@ -35,11 +35,12 @@ Add the formula plugin to your tinyMCE configuration
 plugins: "... formula",
 ```
 
-Add configuration options for the formula plugin. `path` is the only setting and is optional.
+Add configuration options for the formula plugin. The setting is optional.
 
 ```javascript
 formula: {
-    path: 'path/to/public/plugin/folder'
+    path: 'path/to/public/plugin/folder',
+    mlang: 'mml'
 },
 ```
 
@@ -47,8 +48,12 @@ formula: {
 
 ###path (optional if plugin installed inside `tinymce/plugins` folder, required otherwise)
 
-If you have installed the plugin in a different folder than the ```tinymce/plugins``` folder then you need to specify 
+If you have installed the plugin in a different folder than the ```tinymce/plugins``` folder then you need to specify
 the path (public) where the plugin is installed.
+
+###mlang (optional, defaults to 'latex')
+
+If you want to default the editor to MathML instead of latex, define ```mlang: 'mml'``` in the options. The only two supported variables are ```latex``` and ```mml```.
 
 ##License
 

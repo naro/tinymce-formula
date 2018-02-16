@@ -1,12 +1,14 @@
 (function(tinymce){
   tinymce.create('tinymce.plugins.Formula', {
     init: function(editor, url) {
-      var options = editor.getParam('formula') || {};
-      var path = options.path || url;
+      var options = editor.getParam('formula') || {},
+          fOptions = {};
+      fOptions.path = options.path || url;
+      fOptions.mlang = options.mlang || 'latex';
       editor.addButton('formula', {
-        image: path + '/img/formula.png',
+        image: fOptions.path + '/img/formula.png',
         tooltip: 'Insert Formula',
-        onclick: showFormulaDialog.bind(this, editor, path),
+        onclick: showFormulaDialog.bind(this, editor, fOptions),
         onPostRender: function() {
           var _this = this;   // reference to the button itself
           editor.on('NodeChange', function(e) {
@@ -20,12 +22,13 @@
   tinymce.PluginManager.add('formula', tinymce.plugins.Formula);
 
 
-  function showFormulaDialog(editor, url) {
+  function showFormulaDialog(editor, fOptions) {
+    var url = fOptions.path;
     editor.windowManager.open({
       title: "Formula",
       width : 900,
       height : 610,
-      html: buildIFrame(editor, url),
+      html: buildIFrame(editor, fOptions),
       buttons: [
         {
           text: 'Cancel',
@@ -54,10 +57,11 @@
     });
   }
 
-  function buildIFrame(editor, url){
+  function buildIFrame(editor, fOptions){
+    var url = fOptions.path;
     var currentNode = editor.selection.getNode();
     var lang = editor.getParam('language') || 'en';
-    var mlangParam = '';
+    var mlangParam = "&mlang=" + fOptions.mlang;
     var equationParam = '';
     if (currentNode.nodeName.toLowerCase() == 'img' && currentNode.className.indexOf('fm-editor-equation')>-1) {
       if (currentNode.getAttribute('data-mlang')) mlangParam = "&mlang=" + currentNode.getAttribute('data-mlang');
